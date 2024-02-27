@@ -1,9 +1,9 @@
 const Router = require('@koa/router')
 const router = new Router({ prefix: '/api/v1' })
 const userController = require('../controller/userController')
-const { registerValidator } = require('../middleware/validator/userValidator')
+const { registerValidator, loginValidate } = require('../middleware/validator/userValidator')
 router
-    .get('/user/:id', userController.user)
     .post('/user/register', registerValidator, userController.register)
-
+    .post('/user/login', loginValidate, userController.login)
+    .get('/user/:id', userController.user)
 module.exports = router
