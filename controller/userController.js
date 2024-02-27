@@ -20,3 +20,12 @@ module.exports.login = async ctx => {
     userinfo.token = await createToken(userinfo)
     ctx.body = userinfo
 }
+// 获取用户信息
+module.exports.getUser = async ctx => {
+    const userid = ctx.request.params.userid
+    console.log(userid)
+    const result = await User.findById(userid, [
+        "name"
+    ])
+    ctx.body = result
+}

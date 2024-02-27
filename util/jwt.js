@@ -13,3 +13,25 @@ module.exports.createToken = async userInfo => {
         }
     )
 }
+
+
+// 验证token 
+module.exports.verifyToken = function (required = true) {
+    return async (ctx, next) => {
+        var token = ctx.headers.authorization
+        token = token ? token.split("Bearer ")[1] : null
+        if (token) {
+            try {
+                var userInfo = await verify(token, 'koa-blog')
+                ctx.user = userInfo
+                await next()
+            } catch (error) {
+                ctx.throw(402, error)
+            }
+        } else if (required) {
+            ctx.throw(402, '无效的token')
+        } else {
+            await next()
+        }
+    }
+}
